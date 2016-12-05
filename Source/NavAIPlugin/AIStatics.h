@@ -17,3 +17,12 @@ class NAVAIPLUGIN_API UAIStatics : public UGameplayStatics
 	
 	
 };
+
+UENUM()
+enum class ELocation :uint8
+{
+	Mine,
+	Bank,
+	Home,
+	Saloon
+};

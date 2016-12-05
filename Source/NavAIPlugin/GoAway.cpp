@@ -21,6 +21,7 @@ void GoAway::Execute(AMyActor * Actor)
 	}
 	else
 	{
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("id %u"), (uint8) ELocation::Mine));
 		Actor->ChangeState(new Return());
 	}
 }
