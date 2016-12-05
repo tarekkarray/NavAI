@@ -1,0 +1,13 @@
+{
+	"FileVersion": 3,
+	"EngineAssociation": "{8FC5ED65-4726-53C3-69D2-2FAEAE608C93}",
+	"Category": "",
+	"Description": "",
+	"Modules": [
+		{
+			"Name": "NavAIPlugin",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	]
+}
