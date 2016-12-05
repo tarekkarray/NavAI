@@ -2,14 +2,14 @@
 
 #pragma once
 
-#include "Engine/UserDefinedEnum.h"
-#include "Locations.generated.h"
+#include "Kismet/GameplayStatics.h"
+#include "AIStatics.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class NAVAIPLUGIN_API ULocations : public UUserDefinedEnum
+class NAVAIPLUGIN_API UAIStatics : public UGameplayStatics
 {
 	GENERATED_BODY()
 	
