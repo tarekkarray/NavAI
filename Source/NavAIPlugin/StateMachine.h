@@ -43,7 +43,10 @@ public:
 	State<entity_type>* GetCurrentState()const { return CurrentState };
 	State<entity_type>* GetPreviousState()const { return PreviousState };
 	State<entity_type>* GetGlobalState()const { return GlobalState };
-	bool IsInState(const State<entity_type>& st)const;
+	bool IsInState(const State<entity_type>& st)const
+	{
+		return typeid(*CurrentState) == typeid(st);
+	}
 
 private:
 	entity_type* Owner;
