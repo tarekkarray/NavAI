@@ -13,7 +13,7 @@ VisitBankAndDepositGold::~VisitBankAndDepositGold()
 
 void VisitBankAndDepositGold::Execute(class AMyActor* Actor)
 {
-
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("In the bank"));
 }
 
 void VisitBankAndDepositGold::Enter(class AMyActor* Actor)

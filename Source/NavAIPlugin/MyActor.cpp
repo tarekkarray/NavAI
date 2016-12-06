@@ -2,6 +2,7 @@
 
 #include "NavAIPlugin.h"
 #include "State.h"
+#include "EnterMineAndDigForNugget.h"
 #include "MyActor.h"
 
 
@@ -11,7 +12,7 @@ AMyActor::AMyActor()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	this->OnDestroyed.AddDynamic(this, &AMyActor::CleanUp);
-	
+	MaxFatigue = MaxThirst = MaxCarriedGold = 10;
 
 	
 }
@@ -21,7 +22,7 @@ void AMyActor::BeginPlay()
 {
 	Super::BeginPlay();
 	SetLifeSpan(5.0f);
-	
+	CurrentState = EnterMineAndDigForNugget::Instance();
 }
 
 // Called every frame
@@ -35,7 +36,6 @@ void AMyActor::ChangeState(State<AMyActor> * NewState)
 {
 	check(CurrentState && NewState);
 	CurrentState->Exit(this);
-	delete CurrentState;
 	CurrentState = NewState;
 	CurrentState->Enter(this);
 }
