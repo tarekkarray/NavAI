@@ -2,7 +2,6 @@
 
 #include "NavAIPlugin.h"
 #include "State.h"
-#include "GoAway.h"
 #include "MyActor.h"
 
 
@@ -21,7 +20,6 @@ AMyActor::AMyActor()
 void AMyActor::BeginPlay()
 {
 	Super::BeginPlay();
-	CurrentState = new GoAway();
 	SetLifeSpan(5.0f);
 	
 }
@@ -33,10 +31,45 @@ void AMyActor::Tick( float DeltaTime )
 	CurrentState->Execute(this);
 }
 
-void AMyActor::ChangeState(State * NewState)
+void AMyActor::ChangeState(State<AMyActor> * NewState)
 {
+	check(CurrentState && NewState);
+	CurrentState->Exit(this);
 	delete CurrentState;
 	CurrentState = NewState;
+	CurrentState->Enter(this);
+}
+
+void AMyActor::ChangeLocation(ELocation NewLocation)
+{
+	CurrentLocation = NewLocation;
+}
+
+void AMyActor::AddToGoldCarried(uint32 AddedGold)
+{
+	if (++GoldCarried >= MaxCarriedGold)
+	{
+		bArePocketsFull = true;
+	}
+}
+
+void AMyActor::IncreaseFatigue(uint32 AddedFatigue=1)
+{
+	Fatigue += AddedFatigue;
+	if (Fatigue >= MaxFatigue)
+	{
+		bIsTired = true;
+	}
+}
+
+bool AMyActor::IsThirsty()
+{
+	return bIsThirsty;
+}
+
+bool AMyActor::ArePocketsFull()
+{
+	return bArePocketsFull;
 }
 
 void AMyActor::CleanUp(AActor* DestroyedActor)

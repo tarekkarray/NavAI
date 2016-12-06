@@ -4,6 +4,7 @@
 
 #include "GameFramework/Actor.h"
 #include "BaseGameEntity.h"
+#include "State.h"
 #include "MyActor.generated.h"
 
 UCLASS()
@@ -20,12 +21,45 @@ public:
 	
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
-
-	void ChangeState(class State* NewState);
-
+	
+	void ChangeState(State<AMyActor>* NewState);
+	UPROPERTY()
+		ELocation CurrentLocation;
+	UPROPERTY()
+		uint32 Thirst;
+	UPROPERTY()
+		uint32 GoldCarried;
+	UPROPERTY()
+		uint32 GoldInBank;
+	UPROPERTY()
+		uint32 Fatigue;
+	UFUNCTION()
+		void  ChangeLocation(ELocation NewLocation);
+	UFUNCTION()
+		void AddToGoldCarried(uint32 AddedGold);
+	UFUNCTION()
+		void IncreaseFatigue(uint32 AddedFatigue);
+	UFUNCTION()
+		bool IsThirsty();
+	UFUNCTION()
+		bool ArePocketsFull();
 private:
-	class State* CurrentState;
+	State<AMyActor>* CurrentState;
 	
 	UFUNCTION()
 	void CleanUp(class AActor* DestroyedActor);
+	UPROPERTY(EditAnywhere)
+		uint32 MaxFatigue;
+	UPROPERTY(EditAnywhere)
+		uint32 MaxThirst;
+	UPROPERTY(EditAnywhere)
+		uint32 MaxCarriedGold;
+	UPROPERTY()
+		bool bIsThirsty;
+	UPROPERTY()
+		bool bIsTired;
+	UPROPERTY()
+		bool bArePocketsFull;
+	
+
 };
