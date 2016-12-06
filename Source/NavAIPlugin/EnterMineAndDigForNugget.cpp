@@ -19,7 +19,7 @@ void EnterMineAndDigForNugget::Execute(class AMyActor* Actor)
 	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow,TEXT("Digging"));
 	if (Actor->ArePocketsFull())
 	{
-		Actor->ChangeState(VisitBankAndDepositGold::Instance());
+		Actor->GetFSM()->ChangeState(VisitBankAndDepositGold::Instance());
 	}
 }
 

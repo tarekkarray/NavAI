@@ -4,7 +4,7 @@
 
 #include "GameFramework/Actor.h"
 #include "BaseGameEntity.h"
-#include "State.h"
+#include "StateMachine.h"
 #include "MyActor.generated.h"
 
 UCLASS()
@@ -22,7 +22,7 @@ public:
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
 	
-	void ChangeState(State<AMyActor>* NewState);
+	StateMachine<AMyActor>* GetFSM()const;
 	UPROPERTY()
 		ELocation CurrentLocation;
 	UPROPERTY()
@@ -44,7 +44,7 @@ public:
 	UFUNCTION()
 		bool ArePocketsFull();
 private:
-	State<AMyActor>* CurrentState;
+	StateMachine<AMyActor>* ActorStateMachine;
 	
 	UFUNCTION()
 	void CleanUp(class AActor* DestroyedActor);

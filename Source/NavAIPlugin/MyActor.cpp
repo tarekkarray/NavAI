@@ -2,6 +2,7 @@
 
 #include "NavAIPlugin.h"
 #include "State.h"
+#include "StateMachine.h"
 #include "EnterMineAndDigForNugget.h"
 #include "MyActor.h"
 
@@ -13,8 +14,9 @@ AMyActor::AMyActor()
 	PrimaryActorTick.bCanEverTick = true;
 	this->OnDestroyed.AddDynamic(this, &AMyActor::CleanUp);
 	MaxFatigue = MaxThirst = MaxCarriedGold = 10;
+	ActorStateMachine = new StateMachine<AMyActor>(this);
+	ActorStateMachine->SetCurrentState(EnterMineAndDigForNugget::Instance());
 
-	
 }
 
 // Called when the game starts or when spawned
@@ -22,22 +24,19 @@ void AMyActor::BeginPlay()
 {
 	Super::BeginPlay();
 	SetLifeSpan(5.0f);
-	CurrentState = EnterMineAndDigForNugget::Instance();
+	
 }
 
 // Called every frame
-void AMyActor::Tick( float DeltaTime )
+void AMyActor::Tick(float DeltaTime)
 {
-	Super::Tick( DeltaTime );
-	CurrentState->Execute(this);
+	Super::Tick(DeltaTime);
+	ActorStateMachine->Update();
 }
 
-void AMyActor::ChangeState(State<AMyActor> * NewState)
+StateMachine<AMyActor>* AMyActor::GetFSM() const
 {
-	check(CurrentState && NewState);
-	CurrentState->Exit(this);
-	CurrentState = NewState;
-	CurrentState->Enter(this);
+	return ActorStateMachine;
 }
 
 void AMyActor::ChangeLocation(ELocation NewLocation)
@@ -74,10 +73,10 @@ bool AMyActor::ArePocketsFull()
 
 void AMyActor::CleanUp(AActor* DestroyedActor)
 {
-	if (CurrentState != nullptr)
+	if (ActorStateMachine != nullptr)
 	{
-		delete(CurrentState);
-		CurrentState = NULL;
+		delete(ActorStateMachine);
+		ActorStateMachine = NULL;
 		if (GEngine)
 			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow,FString::Printf(TEXT("id %d"),GetID()));
 	}
